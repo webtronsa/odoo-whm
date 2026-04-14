@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+  <!-- ============================================================
+       WHM AUTOMATED CRON JOBS
+       ============================================================ -->
+
+  <!-- Provision Pending Hosting Accounts -->
+  <record id="cron_whm_provision_pending" model="ir.cron">
+    <field name="name">WHM: Provision Pending Hosting Accounts</field>
+    <field name="model_id" ref="model_whm_hosting_account"/>
+    <field name="state">code</field>
+    <field name="code">model.cron_provision_pending_hosting()</field>
+    <field name="interval_number">5</field>
+    <field name="interval_type">minutes</field>
+    <field name="active">True</field>
+    <field name="doall">False</field>
+    <field name="numbercall">-1</field>
+    <field name="priority">5</field>
+  </record>
+
+  <!-- Sync Hosting Account Usage -->
+  <record id="cron_whm_sync_usage" model="ir.cron">
+    <field name="name">WHM: Sync Hosting Account Usage</field>
+    <field name="model_id" ref="model_whm_hosting_account"/>
+    <field name="state">code</field>
+    <field name="code">model.cron_sync_hosting_usage()</field>
+    <field name="interval_number">1</field>
+    <field name="interval_type">hours</field>
+    <field name="active">True</field>
+    <field name="doall">False</field>
+    <field name="numbercall">-1</field>
+    <field name="priority">10</field>
+  </record>
+
+  <!-- Check Server Status -->
+  <record id="cron_whm_server_status" model="ir.cron">
+    <field name="name">WHM: Check Server Status</field>
+    <field name="model_id" ref="model_whm_server"/>
+    <field name="state">code</field>
+    <field name="code">model.cron_check_server_status()</field>
+    <field name="interval_number">15</field>
+    <field name="interval_type">minutes</field>
+    <field name="active">True</field>
+    <field name="doall">False</field>
+    <field name="numbercall">-1</field>
+    <field name="priority">15</field>
+  </record>
+
+  <!-- Sync Server Information -->
+  <record id="cron_whm_sync_servers" model="ir.cron">
+    <field name="name">WHM: Sync Server Information</field>
+    <field name="model_id" ref="model_whm_server"/>
+    <field name="state">code</field>
+    <field name="code">model.cron_sync_all_servers()</field>
+    <field name="interval_number">6</field>
+    <field name="interval_type">hours</field>
+    <field name="active">True</field>
+    <field name="doall">False</field>
+    <field name="numbercall">-1</field>
+    <field name="priority">20</field>
+  </record>
+
+  <!-- Check Domain Expiry -->
+  <record id="cron_whm_domain_expiry" model="ir.cron">
+    <field name="name">WHM: Check Domain Expiry</field>
+    <field name="model_id" ref="model_whm_domain"/>
+    <field name="state">code</field>
+    <field name="code">model.cron_check_domain_expiry()</field>
+    <field name="interval_number">1</field>
+    <field name="interval_type">days</field>
+    <field name="active">True</field>
+    <field name="doall">False</field>
+    <field name="numbercall">-1</field>
+    <field name="priority">25</field>
+  </record>
+
+  <!-- Check Account Due Dates -->
+  <record id="cron_whm_due_accounts" model="ir.cron">
+    <field name="name">WHM: Check Account Due Dates</field>
+    <field name="model_id" ref="model_whm_hosting_account"/>
+    <field name="state">code</field>
+    <field name="code">model.cron_check_due_accounts()</field>
+    <field name="interval_number">1</field>
+    <field name="interval_type">days</field>
+    <field name="active">True</field>
+    <field name="doall">False</field>
+    <field name="numbercall">-1</field>
+    <field name="priority">30</field>
+  </record>
+
+  <!-- Generate Usage Reports -->
+  <record id="cron_whm_usage_reports" model="ir.cron">
+    <field name="name">WHM: Generate Usage Reports</field>
+    <field name="model_id" ref="model_whm_hosting_account"/>
+    <field name="state">code</field>
+    <field name="code">model.cron_generate_usage_reports()</field>
+    <field name="interval_number">1</field>
+    <field name="interval_type">weeks</field>
+    <field name="active">True</field>
+    <field name="doall">False</field>
+    <field name="numbercall">-1</field>
+    <field name="priority">35</field>
+  </record>
+
+  <!-- Backup WHM Configuration -->
+  <record id="cron_whm_backup_config" model="ir.cron">
+    <field name="name">WHM: Backup Configuration</field>
+    <field name="model_id" ref="model_whm_server"/>
+    <field name="state">code</field>
+    <field name="code">model.cron_backup_configuration()</field>
+    <field name="interval_number">1</field>
+    <field name="interval_type">weeks</field>
+    <field name="active">False</field>
+    <field name="doall">False</field>
+    <field name="numbercall">-1</field>
+    <field name="priority">40</field>
+  </record>
+
+  <!-- Clean Old Logs -->
+  <record id="cron_whm_clean_logs" model="ir.cron">
+    <field name="name">WHM: Clean Old Logs</field>
+    <field name="model_id" ref="ir.logging"/>
+    <field name="state">code</field>
+    <field name="code">model._clean_old_whm_logs()</field>
+    <field name="interval_number">1</field>
+    <field name="interval_type">weeks</field>
+    <field name="active">True</field>
+    <field name="doall">False</field>
+    <field name="numbercall">-1</field>
+    <field name="priority">45</field>
+  </record>
+
+  <!-- Sync TLD Pricing -->
+  <record id="cron_whm_sync_tld_pricing" model="ir.cron">
+    <field name="name">WHM: Sync TLD Pricing</field>
+    <field name="model_id" ref="model_whm_tld"/>
+    <field name="state">code</field>
+    <field name="code">model.cron_sync_pricing_from_registrars()</field>
+    <field name="interval_number">1</field>
+    <field name="interval_type">weeks</field>
+    <field name="active">False</field>
+    <field name="doall">False</field>
+    <field name="numbercall">-1</field>
+    <field name="priority">50</field>
+  </record>
+
+  <!-- Auto-suspend Overdue Accounts -->
+  <record id="cron_whm_auto_suspend" model="ir.cron">
+    <field name="name">WHM: Auto-suspend Overdue Accounts</field>
+    <field name="model_id" ref="model_whm_hosting_account"/>
+    <field name="state">code</field>
+    <field name="code">model.cron_auto_suspend_overdue()</field>
+    <field name="interval_number">1</field>
+    <field name="interval_type">days</field>
+    <field name="active">False</field>
+    <field name="doall">False</field>
+    <field name="numbercall">-1</field>
+    <field name="priority">55</field>
+  </record>
+
+  <!-- Send Renewal Reminders -->
+  <record id="cron_whm_renewal_reminders" model="ir.cron">
+    <field name="name">WHM: Send Renewal Reminders</field>
+    <field name="model_id" ref="model_whm_hosting_account"/>
+    <field name="state">code</field>
+    <field name="code">model.cron_send_renewal_reminders()</field>
+    <field name="interval_number">1</field>
+    <field name="interval_type">days</field>
+    <field name="active">True</field>
+    <field name="doall">False</field>
+    <field name="numbercall">-1</field>
+    <field name="priority">60</field>
+  </record>
+
+  <!-- Update SSL Certificates -->
+  <record id="cron_whm_ssl_renewal" model="ir.cron">
+    <field name="name">WHM: Check SSL Certificate Renewal</field>
+    <field name="model_id" ref="model_whm_ssl_certificate"/>
+    <field name="state">code</field>
+    <field name="code">model.cron_check_ssl_renewal()</field>
+    <field name="interval_number">1</field>
+    <field name="interval_type">days</field>
+    <field name="active">True</field>
+    <field name="doall">False</field>
+    <field name="numbercall">-1</field>
+    <field name="priority">65</field>
+  </record>
+
+  <!-- Generate Invoices -->
+  <record id="cron_whm_generate_invoices" model="ir.cron">
+    <field name="name">WHM: Generate Recurring Invoices</field>
+    <field name="model_id" ref="model_whm_hosting_account"/>
+    <field name="state">code</field>
+    <field name="code">model.cron_generate_recurring_invoices()</field>
+    <field name="interval_number">1</field>
+    <field name="interval_type">days</field>
+    <field name="active">True</field>
+    <field name="doall">False</field>
+    <field name="numbercall">-1</field>
+    <field name="priority">70</field>
+  </record>
+
+  <!-- Monitor Resource Usage -->
+  <record id="cron_whm_monitor_resources" model="ir.cron">
+    <field name="name">WHM: Monitor Resource Usage</field>
+    <field name="model_id" ref="model_whm_server"/>
+    <field name="state">code</field>
+    <field name="code">model.cron_monitor_resource_usage()</field>
+    <field name="interval_number">30</field>
+    <field name="interval_type">minutes</field>
+    <field name="active">True</field>
+    <field name="doall">False</field>
+    <field name="numbercall">-1</field>
+    <field name="priority">75</field>
+  </record>
+
+</odoo>
