@@ -2,7 +2,62 @@
 
 A comprehensive WHM/cPanel hosting automation and billing platform for Odoo 19 that replicates WHMCS functionality with seamless integration into your existing Odoo ecosystem.
 
-## 🚀 Features
+## � File Structure
+
+```
+Odoo19WHM-Addon/
+├── __init__.py                    # Main module initialization
+├── __manifest__.py                # Module metadata and dependencies
+├── hooks.py                       # Installation and uninstallation hooks
+├── requirements.txt               # Python dependencies
+├── README.md                      # This documentation file
+├── CONTRIBUTORS.md                # Contributors and credits
+├── LICENSE                        # LGPL-3 License
+│
+├── models/                        # Data models
+│   ├── __init__.py               # Model imports
+│   ├── whm_hosting_account.py    # Hosting account model
+│   ├── whm_server.py             # WHM server configuration
+│   ├── whm_package.py            # Hosting packages
+│   ├── whm_domain.py             # Domain management
+│   ├── whm_tld.py                # TLD pricing and config
+│   ├── product_product.py         # Product variant extensions
+│   ├── product_template.py        # Product template extensions
+│   ├── sale_order.py             # Sales order integration
+│   └── res_partner.py            # Customer extensions
+│
+├── views/                         # UI views and templates
+│   ├── __init__.py               # View imports
+│   ├── whm_hosting_views.xml     # Hosting account views
+│   ├── whm_server_views.xml      # WHM server views
+│   ├── whm_package_views.xml     # Package management views
+│   ├── whm_domain_views.xml      # Domain management views
+│   ├── whm_tld_views.xml         # TLD management views
+│   ├── product_views.xml          # Product configuration views
+│   ├── whm_backend_menu.xml      # Backend menu structure
+│   ├── portal_hosting_setup.xml  # Portal setup wizard
+│   ├── portal_templates.xml      # Customer portal templates
+│   └── email_templates.xml       # Email notification templates
+│
+├── controllers/                   # Web controllers
+│   ├── __init__.py               # Controller imports
+│   ├── main.py                   # Public API endpoints
+│   └── portal.py                 # Customer portal controllers
+│
+├── security/                      # Security configuration
+│   ├── ir.model.access.csv       # Model access rights
+│   └── whm_security.xml          # Groups and record rules
+│
+├── data/                          # Default data and configuration
+│   ├── crons.xml                 # Scheduled cron jobs
+│   └── whm_data.xml              # Default TLDs, packages, products
+│
+└── static/                        # Static assets
+    └── description/               # Marketplace description
+        └── index.html            # Apps store description page
+```
+
+## �🚀 Features
 
 ### Core Hosting Management
 - **Automated Provisioning**: Instant cPanel account creation via WHM API
