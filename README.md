@@ -57,7 +57,7 @@ Odoo19WHM-Addon/
         └── index.html            # Apps store description page
 ```
 
-## �🚀 Features
+## �� Features
 
 ### Core Hosting Management
 - **Automated Provisioning**: Instant cPanel account creation via WHM API
@@ -311,9 +311,28 @@ The module is designed to be extensible:
 - Data migration included
 - Rollback capability
 
-## 📄 License
+## Odoo Apps Marketplace
 
-This module is licensed under LGPL-3.
+### Repository Information
+- **Git URL**: `https://github.com/webtronsa/whm-Odoo.git#19.0`
+- **Branch**: `19.0` (matches Odoo version)
+- **Module Path**: `Odoo19WHM-Addon/` (one folder per app at root)
+
+### Vendor Guidelines Compliance
+- [x] One folder per App/Theme at the root of the repository
+- [x] Branch name matches the series name (19.0 for Odoo 19)
+- [x] Proper module structure with __manifest__.py
+- [x] Complete documentation and README
+- [x] LGPL-3 License included
+- [x] Static description for marketplace
+- [x] Proper dependencies declared
+
+### Submission Ready
+Your repository is now properly configured for Odoo Apps marketplace submission with the correct Git URL format: `https://github.com/webtronsa/whm-Odoo.git#19.0`
+
+## License
+
+This module is licensed under LGPL-3. See LICENSE file for details.
 
 ## 🤝 Contributing
 
