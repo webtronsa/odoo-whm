@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+  <!-- ============================================================
+       PRODUCT VIEWS FOR WHM INTEGRATION
+       ============================================================ -->
+
+  <!-- Product Template Form Extension -->
+  <record id="view_product_template_form_whm" model="ir.ui.view">
+    <field name="name">product.template.form.whm</field>
+    <field name="model">product.template</field>
+    <field name="inherit_id" ref="product.product_template_only_form_view"/>
+    <field name="arch" type="xml">
+      <xpath expr="//field[@name='sale_ok']" position="after">
+        <field name="is_whm_product" widget="boolean_toggle"/>
+      </xpath>
+      
+      <xpath expr="//notebook" position="inside">
+        <page string="WHM Configuration" invisible="is_whm_product == False">
+          <group>
+            <group string="WHM Product Type">
+              <field name="whm_product_type"/>
+              <field name="whm_auto_provision"/>
+              <field name="whm_auto_setup"/>
+              <field name="whm_trial_days"/>
+            </group>
+            <group string="WHM Integration">
+              <field name="whm_sync_with_whm"/>
+              <field name="whm_create_package_in_whm"/>
+            </group>
+          </group>
+          
+          <group string="Hosting Configuration" t-if="whm_product_type in ['hosting', 'reseller']">
+            <group>
+              <field name="whm_package_id"/>
+              <field name="whm_server_id"/>
+            </group>
+            <group>
+              <field name="whm_setup_fee"/>
+              <field name="whm_pricing_model"/>
+            </group>
+          </group>
+          
+          <group string="Domain Configuration" t-if="whm_product_type == 'domain'">
+            <group>
+              <field name="whm_tld_id"/>
+              <field name="whm_domain_registration"/>
+              <field name="whm_domain_transfer"/>
+              <field name="whm_domain_renewal"/>
+            </group>
+          </group>
+          
+          <group string="SSL Configuration" t-if="whm_product_type == 'ssl'">
+            <group>
+              <field name="whm_ssl_type"/>
+            </group>
+          </group>
+          
+          <group string="Limits and Quotas">
+            <group>
+              <field name="whm_max_accounts_per_customer"/>
+              <field name="whm_min_contract_period"/>
+            </group>
+            <group>
+              <field name="whm_cancellation_notice_days"/>
+            </group>
+          </group>
+          
+          <group string="WHM Summary">
+            <group colspan="2">
+              <field name="get_whm_product_summary" readonly="1" widget="text"/>
+            </group>
+          </group>
+        </page>
+      </xpath>
+    </field>
+  </record>
+
+  <!-- Product Variant Form Extension -->
+  <record id="view_product_product_form_whm" model="ir.ui.view">
+    <field name="name">product.product.form.whm</field>
+    <field name="model">product.product</field>
+    <field name="inherit_id" ref="product.product_normal_form_view"/>
+    <field name="arch" type="xml">
+      <xpath expr="//field[@name='sale_ok']" position="after">
+        <field name="is_whm_product" widget="boolean_toggle"/>
+      </xpath>
+      
+      <xpath expr="//notebook" position="inside">
+        <page string="WHM Configuration" invisible="is_whm_product == False">
+          <group>
+            <group string="WHM Product Type">
+              <field name="whm_product_type"/>
+              <field name="whm_auto_provision"/>
+              <field name="whm_auto_setup"/>
+              <field name="whm_trial_days"/>
+            </group>
+            <group string="WHM Integration">
+              <field name="whm_sync_with_whm"/>
+              <field name="whm_create_package_in_whm"/>
+            </group>
+          </group>
+          
+          <group string="Hosting Configuration" t-if="whm_product_type in ['hosting', 'reseller']">
+            <group>
+              <field name="whm_package_id"/>
+              <field name="whm_server_id"/>
+            </group>
+            <group>
+              <field name="whm_setup_fee"/>
+              <field name="whm_pricing_model"/>
+            </group>
+          </group>
+          
+          <group string="Domain Configuration" t-if="whm_product_type == 'domain'">
+            <group>
+              <field name="whm_tld_id"/>
+              <field name="whm_domain_registration"/>
+              <field name="whm_domain_transfer"/>
+              <field name="whm_domain_renewal"/>
+            </group>
+          </group>
+          
+          <group string="SSL Configuration" t-if="whm_product_type == 'ssl'">
+            <group>
+              <field name="whm_ssl_type"/>
+            </group>
+          </group>
+          
+          <group string="Limits and Quotas">
+            <group>
+              <field name="whm_max_accounts_per_customer"/>
+              <field name="whm_min_contract_period"/>
+            </group>
+            <group>
+              <field name="whm_cancellation_notice_days"/>
+            </group>
+          </group>
+          
+          <group string="WHM Summary">
+            <group colspan="2">
+              <field name="get_whm_product_summary" readonly="1" widget="text"/>
+            </group>
+          </group>
+        </page>
+      </xpath>
+    </field>
+  </record>
+
+  <!-- Product Tree View Extension -->
+  <record id="view_product_product_tree_whm" model="ir.ui.view">
+    <field name="name">product.product.tree.whm</field>
+    <field name="model">product.product</field>
+    <field name="inherit_id" ref="product.product_product_tree_view"/>
+    <field name="arch" type="xml">
+      <xpath expr="//field[@name='name']" position="after">
+        <field name="is_whm_product" widget="boolean_toggle" optional="show"/>
+        <field name="whm_product_type" optional="show"/>
+      </xpath>
+    </field>
+  </record>
+
+  <!-- Product Template Tree View Extension -->
+  <record id="view_product_template_tree_whm" model="ir.ui.view">
+    <field name="name">product.template.tree.whm</field>
+    <field name="model">product.template</field>
+    <field name="inherit_id" ref="product.product_template_tree_view"/>
+    <field name="arch" type="xml">
+      <xpath expr="//field[@name='name']" position="after">
+        <field name="is_whm_product" widget="boolean_toggle" optional="show"/>
+        <field name="whm_product_type" optional="show"/>
+      </xpath>
+    </field>
+  </record>
+
+  <!-- Product Search View Extension -->
+  <record id="view_product_search_whm" model="ir.ui.view">
+    <field name="name">product.search.whm</field>
+    <field name="model">product.product</field>
+    <field name="inherit_id" ref="product.product_search_form_view"/>
+    <field name="arch" type="xml">
+      <xpath expr="//filter[@name='filter_to_sell']" position="after">
+        <separator/>
+        <filter string="WHM Products" name="whm_products" domain="[('is_whm_product', '=', True)]"/>
+        <filter string="Hosting Products" name="hosting_products" domain="[('whm_product_type', 'in', ['hosting', 'reseller', 'vps', 'dedicated'])]"/>
+        <filter string="Domain Products" name="domain_products" domain="[('whm_product_type', '=', 'domain')]"/>
+        <filter string="SSL Products" name="ssl_products" domain="[('whm_product_type', '=', 'ssl')]"/>
+      </xpath>
+      
+      <xpath expr="//group[@string='Group by']" position="inside">
+        <filter string="WHM Product Type" name="group_whm_type" context="{'group_by': 'whm_product_type'}"/>
+      </xpath>
+    </field>
+  </record>
+
+</odoo>

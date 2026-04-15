@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+  <!-- ============================================================
+       WHM EMAIL TEMPLATES
+       ============================================================ -->
+
+  <!-- Hosting Welcome Email -->
+  <record id="email_hosting_welcome" model="mail.template">
+    <field name="name">WHM: Hosting Welcome</field>
+    <field name="model_id" ref="model_whm_hosting_account"/>
+    <field name="subject">Your Hosting Account is Ready - Login Details Inside</field>
+    <field name="email_from">${object.server_id.from_email or 'noreply@whmhosting.com'}</field>
+    <field name="email_to">${object.partner_id.email}</field>
+    <field name="body_html" type="html">
+<div style="font-family:Arial, sans-serif;max-width:600px;margin:0 auto;background:#f8f9fa;padding:20px">
+  <div style="background:linear-gradient(135deg,#2c3e50,#3498db);color:white;border-radius:12px;padding:32px;text-align:center;margin-bottom:20px">
+    <h1 style="margin:0;font-size:1.8em">Welcome to WHM Hosting</h1>
+    <p style="margin:8px 0 0">Your hosting account is ready to use</p>
+  </div>
+
+  <div style="background:white;border-radius:12px;padding:28px;margin-bottom:16px">
+    <h2 style="color:#2c3e50;margin-top:0">Hi <t t-out="object.partner_id.name"/>,</h2>
+    <p style="color:#555;line-height:1.6">
+      Your hosting account has been successfully created on our servers.
+      You can now log into your cPanel control panel using the details below.
+    </p>
+  </div>
+
+  <div style="background:white;border-radius:12px;padding:28px;margin-bottom:16px;border-left:4px solid #27ae60">
+    <h3 style="color:#2c3e50;margin-top:0">Your cPanel Login Details</h3>
+    <table style="width:100%;border-collapse:collapse">
+      <tr>
+        <td style="padding:8px 0;color:#6c757d;width:40%">cPanel URL</td>
+        <td style="padding:8px 0;font-weight:700">
+          <a href="#" style="color:#3498db">https://<t t-out="object.server_id.hostname"/>:2083</a>
+        </td>
+      </tr>
+      <tr style="border-top:1px solid #f0f0f0">
+        <td style="padding:8px 0;color:#6c757d">Username</td>
+        <td style="padding:8px 0;font-weight:700;font-family:monospace">
+          <t t-out="object.cpanel_username"/>
+        </td>
+      </tr>
+      <tr style="border-top:1px solid #f0f0f0">
+        <td style="padding:8px 0;color:#6c757d">Domain</td>
+        <td style="padding:8px 0;font-weight:700;font-family:monospace">
+          <t t-out="object.cpanel_domain or 'To be configured'"/>
+        </td>
+      </tr>
+      <tr style="border-top:1px solid #f0f0f0">
+        <td style="padding:8px 0;color:#6c757d">Package</td>
+        <td style="padding:8px 0;font-weight:700"><t t-out="object.whm_package"/></td>
+      </tr>
+    </table>
+  </div>
+
+  <div style="background:#fff3cd;border-radius:12px;padding:20px;margin-bottom:16px;border-left:4px solid #ffc107">
+    <p style="margin:0;color:#856404">
+      <strong>Security Note:</strong> Please change your cPanel password after first login.
+      Keep your login credentials secure and never share them with others.
+    </p>
+  </div>
+
+  <div style="text-align:center;padding:20px;color:#6c757d;font-size:0.8em">
+    <p>WHM Hosting Solutions</p>
+  </div>
+</div>
+    </field>
+    <field name="auto_delete" eval="True"/>
+  </record>
+
+  <!-- Account Suspended Email -->
+  <record id="email_hosting_suspended" model="mail.template">
+    <field name="name">WHM: Account Suspended</field>
+    <field name="model_id" ref="model_whm_hosting_account"/>
+    <field name="subject">Your Hosting Account Has Been Suspended</field>
+    <field name="email_from">${object.server_id.from_email or 'noreply@whmhosting.com'}</field>
+    <field name="email_to">${object.partner_id.email}</field>
+    <field name="body_html" type="html">
+<div style="font-family:Arial, sans-serif;max-width:600px;margin:0 auto;background:#f8f9fa;padding:20px">
+  <div style="background:linear-gradient(135deg,#e74c3c,#c0392b);color:white;border-radius:12px;padding:32px;text-align:center;margin-bottom:20px">
+    <h1 style="margin:0;font-size:1.8em">Account Suspended</h1>
+    <p style="margin:8px 0 0">Your hosting account has been temporarily suspended</p>
+  </div>
+
+  <div style="background:white;border-radius:12px;padding:28px;margin-bottom:16px">
+    <h2 style="color:#2c3e50;margin-top:0">Hi <t t-out="object.partner_id.name"/>,</h2>
+    <p style="color:#555;line-height:1.6">
+      Your hosting account <strong><t t-out="object.cpanel_username"/></strong> has been suspended.
+      This may be due to billing issues, resource overuse, or policy violations.
+    </p>
+    
+    <p style="color:#555;line-height:1.6">
+      Please contact our support team to resolve this issue and restore your account.
+    </p>
+  </div>
+
+  <div style="background:#fff3cd;border-radius:12px;padding:20px;margin-bottom:16px;border-left:4px solid #ffc107">
+    <p style="margin:0;color:#856404">
+      <strong>Account Details:</strong><br>
+      Username: <t t-out="object.cpanel_username"/><br>
+      Domain: <t t-out="object.cpanel_domain or 'Not configured'"/>
+    </p>
+  </div>
+
+  <div style="text-align:center;padding:20px;color:#6c757d;font-size:0.8em">
+    <p>WHM Hosting Solutions</p>
+  </div>
+</div>
+    </field>
+    <field name="auto_delete" eval="True"/>
+  </record>
+
+  <!-- Domain Renewal Reminder -->
+  <record id="email_domain_renewal" model="mail.template">
+    <field name="name">WHM: Domain Renewal Reminder</field>
+    <field name="model_id" ref="model_whm_domain"/>
+    <field name="subject">Domain Renewal Reminder - <t t-out="object.name"/></field>
+    <field name="email_from">${object.hosting_account_id.server_id.from_email or 'noreply@whmhosting.com'}</field>
+    <field name="email_to">${object.hosting_account_id.partner_id.email}</field>
+    <field name="body_html" type="html">
+<div style="font-family:Arial, sans-serif;max-width:600px;margin:0 auto;background:#f8f9fa;padding:20px">
+  <div style="background:linear-gradient(135deg,#f39c12,#e67e22);color:white;border-radius:12px;padding:32px;text-align:center;margin-bottom:20px">
+    <h1 style="margin:0;font-size:1.8em">Domain Renewal Reminder</h1>
+    <p style="margin:8px 0 0">Your domain is expiring soon</p>
+  </div>
+
+  <div style="background:white;border-radius:12px;padding:28px;margin-bottom:16px">
+    <h2 style="color:#2c3e50;margin-top:0">Hi <t t-out="object.hosting_account_id.partner_id.name"/>,</h2>
+    <p style="color:#555;line-height:1.6">
+      Your domain <strong><t t-out="object.name"/></strong> is set to expire on 
+      <strong><t t-out="object.expiry_date.strftime('%B %d, %Y')"/></strong>.
+    </p>
+    
+    <p style="color:#555;line-height:1.6">
+      To avoid service interruption, please renew your domain as soon as possible.
+    </p>
+  </div>
+
+  <div style="background:#d1ecf1;border-radius:12px;padding:20px;margin-bottom:16px;border-left:4px solid #17a2b8">
+    <p style="margin:0;color:#0c5460">
+      <strong>Domain Details:</strong><br>
+      Domain: <t t-out="object.name"/><br>
+      Expiry Date: <t t-out="object.expiry_date.strftime('%B %d, %Y')"/><br>
+      Auto-renew: <t t-out="'Enabled' if object.auto_renew else 'Disabled'"/>
+    </p>
+  </div>
+
+  <div style="text-align:center;padding:20px">
+    <a href="/my/domains" style="background:#3498db;color:white;padding:12px 24px;text-decoration:none;border-radius:6px;display:inline-block">
+      Renew Domain Now
+    </a>
+  </div>
+
+  <div style="text-align:center;padding:20px;color:#6c757d;font-size:0.8em">
+    <p>WHM Hosting Solutions</p>
+  </div>
+</div>
+    </field>
+    <field name="auto_delete" eval="True"/>
+  </record>
+
+  <!-- Invoice Due Reminder -->
+  <record id="email_invoice_due" model="mail.template">
+    <field name="name">WHM: Invoice Due Reminder</field>
+    <field name="model_id" ref="account.model_account_move"/>
+    <field name="subject">Invoice Due Reminder - <t t-out="object.name"/></field>
+    <field name="email_from">billing@whmhosting.com</field>
+    <field name="email_to">${object.partner_id.email}</field>
+    <field name="body_html" type="html">
+<div style="font-family:Arial, sans-serif;max-width:600px;margin:0 auto;background:#f8f9fa;padding:20px">
+  <div style="background:linear-gradient(135deg,#3498db,#2980b9);color:white;border-radius:12px;padding:32px;text-align:center;margin-bottom:20px">
+    <h1 style="margin:0;font-size:1.8em">Invoice Due Reminder</h1>
+    <p style="margin:8px 0 0">Your payment is due soon</p>
+  </div>
+
+  <div style="background:white;border-radius:12px;padding:28px;margin-bottom:16px">
+    <h2 style="color:#2c3e50;margin-top:0">Hi <t t-out="object.partner_id.name"/>,</h2>
+    <p style="color:#555;line-height:1.6">
+      This is a reminder that invoice <strong><t t-out="object.name"/></strong> is due on 
+      <strong><t t-out="object.invoice_date_due.strftime('%B %d, %Y')"/></strong>.
+    </p>
+    
+    <p style="color:#555;line-height:1.6">
+      Total amount due: <strong>$<t t-out="object.amount_total"/></strong>
+    </p>
+  </div>
+
+  <div style="background:#fff3cd;border-radius:12px;padding:20px;margin-bottom:16px;border-left:4px solid #ffc107">
+    <p style="margin:0;color:#856404">
+      <strong>Invoice Details:</strong><br>
+      Invoice Number: <t t-out="object.name"/><br>
+      Due Date: <t t-out="object.invoice_date_due.strftime('%B %d, %Y')"/><br>
+      Amount: $<t t-out="object.amount_total"/>
+    </p>
+  </div>
+
+  <div style="text-align:center;padding:20px">
+    <a href="/my/invoices" style="background:#27ae60;color:white;padding:12px 24px;text-decoration:none;border-radius:6px;display:inline-block">
+      Pay Invoice Now
+    </a>
+  </div>
+
+  <div style="text-align:center;padding:20px;color:#6c757d;font-size:0.8em">
+    <p>WHM Hosting Solutions</p>
+  </div>
+</div>
+    </field>
+    <field name="auto_delete" eval="True"/>
+  </record>
+
+  <!-- Welcome Email for New Customers -->
+  <record id="email_customer_welcome" model="mail.template">
+    <field name="name">WHM: Customer Welcome</field>
+    <field name="model_id" ref="base.model_res_partner"/>
+    <field name="subject">Welcome to WHM Hosting Solutions</field>
+    <field name="email_from">welcome@whmhosting.com</field>
+    <field name="email_to">${object.email}</field>
+    <field name="body_html" type="html">
+<div style="font-family:Arial, sans-serif;max-width:600px;margin:0 auto;background:#f8f9fa;padding:20px">
+  <div style="background:linear-gradient(135deg,#27ae60,#229954);color:white;border-radius:12px;padding:32px;text-align:center;margin-bottom:20px">
+    <h1 style="margin:0;font-size:1.8em">Welcome to WHM Hosting</h1>
+    <p style="margin:8px 0 0">Thank you for choosing us!</p>
+  </div>
+
+  <div style="background:white;border-radius:12px;padding:28px;margin-bottom:16px">
+    <h2 style="color:#2c3e50;margin-top:0">Hi <t t-out="object.name"/>,</h2>
+    <p style="color:#555;line-height:1.6">
+      Welcome to WHM Hosting Solutions! We're excited to have you as a customer.
+      Your account has been created and you can now access our customer portal.
+    </p>
+    
+    <p style="color:#555;line-height:1.6">
+      Here are some helpful links to get you started:
+    </p>
+    
+    <ul style="color:#555;line-height:1.6">
+      <li><a href="/my/hosting" style="color:#3498db">Manage Hosting Accounts</a></li>
+      <li><a href="/my/domains" style="color:#3498db">Manage Domains</a></li>
+      <li><a href="/my/billing/whm" style="color:#3498db">View Billing Information</a></li>
+      <li><a href="/shop" style="color:#3498db">Browse Services</a></li>
+    </ul>
+  </div>
+
+  <div style="background:#e8f5e8;border-radius:12px;padding:20px;margin-bottom:16px;border-left:4px solid #27ae60">
+    <p style="margin:0;color:#2e7d2e">
+      <strong>Need Help?</strong><br>
+      Our support team is available 24/7 to assist you with any questions or issues.
+      You can reach us through the customer portal or by emailing support@whmhosting.com.
+    </p>
+  </div>
+
+  <div style="text-align:center;padding:20px">
+    <a href="/my/home" style="background:#3498db;color:white;padding:12px 24px;text-decoration:none;border-radius:6px;display:inline-block">
+      Access Customer Portal
+    </a>
+  </div>
+
+  <div style="text-align:center;padding:20px;color:#6c757d;font-size:0.8em">
+    <p>WHM Hosting Solutions</p>
+  </div>
+</div>
+    </field>
+    <field name="auto_delete" eval="True"/>
+  </record>
+
+</odoo>
