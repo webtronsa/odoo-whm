@@ -314,7 +314,7 @@ The module is designed to be extensible:
 ## Odoo Apps Marketplace
 
 ### Repository Information
-- **Git URL**: `https://github.com/webtronsa/whm-Odoo.git#19.0`
+- **Git URL**: `ssh://git@github.com/webtronsa/whm-Odoo.git#19.0`
 - **Branch**: `19.0` (matches Odoo version)
 - **Module Path**: `Odoo19WHM-Addon/` (one folder per app at root)
 
@@ -328,7 +328,7 @@ The module is designed to be extensible:
 - [x] Proper dependencies declared
 
 ### Submission Ready
-Your repository is now properly configured for Odoo Apps marketplace submission with the correct Git URL format: `https://github.com/webtronsa/whm-Odoo.git#19.0`
+Your repository is now properly configured for Odoo Apps marketplace submission with the correct Git URL format: `ssh://git@github.com/webtronsa/whm-Odoo.git#19.0`
 
 ## License
 
