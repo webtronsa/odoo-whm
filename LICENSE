@@ -1,0 +1,292 @@
+GNU LESSER GENERAL PUBLIC LICENSE
+                       Version 3, 29 June 2007
+
+ Copyright (C) 2007 Free Software Foundation, Inc. <https://fsf.org/>
+ Everyone is permitted to copy and distribute verbatim copies
+ of this license document, but changing it is not allowed.
+
+  This version of the GNU Lesser General Public License incorporates
+the terms and conditions of version 3 of the GNU General Public
+License, supplemented by the additional permissions listed below.
+
+  0. Additional Definitions.
+
+  As used herein, "this License" refers to version 3 of the GNU Lesser
+General Public License, and the "GNU GPL" refers to version 3 of the GNU
+General Public License.
+
+  "The Library" refers to a covered work governed by this License,
+other than an Application or a Combined Work as defined below.
+
+  An "Application" is any work that makes use of an interface provided
+by the Library, but which is not otherwise based on the Library.
+Defining a subclass of a class defined by the Library is deemed a mode
+of using an interface provided by the Library.
+
+  A "Combined Work" is a work produced by combining or linking an
+Application with the Library.  The particular source code of the Library
+that is used with a Combined Work may be called the "Linked Library".
+
+  The "Minimal Corresponding Source" for a Combined Work means the
+Corresponding Source for the Combined Work, excluding any source code
+for portions of the Combined Work that, considered in isolation, are
+based on the Application, not on the Linked Library.
+
+  The "System Libraries" of an executable work include all modules
+that are required to run the executable work, including any system
+libraries, general-purpose libraries or libraries that are used by
+the executable work but are not part of the executable work.
+
+  The "Corresponding Source" for a Combined Work means the object code
+and/or source code for the Combined Work, including the source code
+for all modules in the Combined Work that are covered by this License,
+but not including any System Libraries of the Combined Work.
+
+  1. Exception to Section 3 of the GNU GPL.
+
+  You may convey a covered work in sections other than object code or
+source code, provided that you convey also the machine-readable
+Corresponding Source of the work in any of the following ways:
+
+    a) Convey the object code in, or embodied in, a physical product
+       (including a physical distribution medium), accompanied by the
+       Corresponding Source fixed on a durable physical medium
+       customarily used for software interchange.
+
+    b) Convey the object code in, or embodied in, a physical product
+       (including a physical distribution medium), accompanied by a
+       written offer, valid for at least three years and valid for as
+       long as you offer spare parts or customer support for that product
+       model, to give anyone who possesses the object code either (1) a
+       copy of the Corresponding Source for all the software in the
+       product that is covered by this License, or (2) access to copy the
+       Corresponding Source from a network server at no charge.
+
+    c) Convey individual copies of the object code with a copy of the
+       written offer to provide the Corresponding Source.  This
+       alternative is allowed only occasionally and noncommercially, and
+       only if you received the object code with such an offer, in accord
+       with subsection 6b.
+
+    d) Convey the object code by offering access from a designated
+       place (gratis or for a charge), and offer equivalent access to the
+       Corresponding Source in the same way through the same place at no
+       further charge.  You need not require recipients to copy the
+       Corresponding Source along with the object code.  If the place to
+       copy the object code is a network server, the Corresponding Source
+       may be on a different server (operated by you or a third party)
+       that supports equivalent copying facilities, provided you maintain
+       clear directions next to the object code saying where to find the
+       Corresponding Source.  Regardless of what server hosts the
+       Corresponding Source, you remain obligated to ensure that it is
+       available for as long as needed to satisfy these requirements.
+
+    e) Convey the object code using peer-to-peer transmission, provided
+       you inform other peers where the object code and Corresponding
+       Source of the work are being offered to the general public at no
+       charge under subsection 6d.
+
+  A separable portion of the object code, whose source code is excluded
+from the Corresponding Source as a System Library, need not be
+included in conveying the object code work.
+
+  A "User Product" is either (1) a "consumer product", which means any
+tangible personal property which is normally used for personal, family,
+or household purposes, or (2) anything designed or sold for incorporation
+into a dwelling.  In determining whether a product is a consumer product,
+doubtful cases shall be resolved in favor of coverage.  For a particular
+product received by a particular user, "normally used" refers to a
+typical or common use of that class of product, regardless of the status
+of the particular user or of the way in which the particular user
+actually uses, or expects or is expected to use, the product.  A product is a
+consumer product regardless of whether the product has substantial
+commercial, industrial or non-consumer uses, unless such uses represent
+the only significant mode of use of the product.
+
+  2. Additional Permissions.
+
+  All material not covered by this License, including any and all
+components of the Covered Work that are not covered by this License,
+may be conveyed under the terms and conditions of the GNU General
+Public License version 3.
+
+  3. Requiring Preservation of the Specified Notices.
+
+  You may not convey a covered work unless you preserve all legal
+notices and attribution notices that are present on the original work.
+
+  4. Conveying Verbatim Copies.
+
+  You may convey verbatim copies of the Library's complete source code
+as you receive it, in any medium, provided that you conspicuously and
+appropriately publish on each copy an appropriate copyright notice;
+and keep intact all notices stating that this License and any
+non-permissive terms added in accord with section 7 apply to the code;
+and keep intact all notices of the absence of any warranty; and give all
+recipients a copy of this License along with the Library.
+
+  You may charge any price or no fee for each copy that you convey,
+and you may offer support or warranty protection for a fee.
+
+  5. Conveying Modified Versions.
+
+  If you modify a copy of the Library, and, in your modifications,
+a facility refers to a function or data to be supplied by an Application
+that uses the facility (other than as an argument passed when the
+facility is invoked), then you may convey a copy of the modified
+version:
+
+    a) under this License, provided that you make a good faith effort to
+       ensure that, in the event an Application does not supply the
+       function or data, the facility still operates, and performs
+       whatever part of its purpose remains meaningful, or
+
+    b) under the GNU GPL version 3, with all the rights and obligations
+       of that license, provided that you do not assert any of the
+       additional permissions granted to you by this License.
+
+  When you convey a copy of a modified version of the Library (or any
+portion of it), you must provide all recipients a copy of the License
+that governs that copy.  If you convey a modified version of a portion
+of the Library, you must also provide all recipients a copy of the
+License that governs that portion.
+
+  6. Rejection of Additional Permissions.
+
+  If you convey a covered work in object code form, then any
+Application that uses the covered work must also be conveyed in object
+code form under the same license, and all of the rights and obligations
+of this License must apply to the covered work.
+
+  7. Termination.
+
+  You may not copy, modify, sublicense, link with, or convey the Library
+except as expressly provided under this License.  Any attempt otherwise
+to copy, modify, sublicense, link with, or convey the Library is void,
+and will automatically terminate your rights under this License.
+
+  However, if you cease all violation of this License, then your
+license from a particular copyright holder is reinstated (a) provisionally,
+unless and until the copyright holder explicitly and finally
+terminates your license, and (b) permanently, if the copyright holder
+fails to notify you of the violation by some reasonable means prior to
+60 days after the cessation.
+
+  Moreover, your license from a particular copyright holder is
+reinstated permanently if the copyright holder notifies you of the
+violation by some reasonable means, this is the first time you have
+received notice of violation of this License (for any work) from that
+copyright holder, and you cure the violation prior to 30 days after
+your receipt of the notice.
+
+  Termination of your rights under this section does not terminate the
+licenses of parties who have received copies or rights from you under
+this License.  If your rights have been terminated and not permanently
+reinstated, you do not qualify to receive new licenses for the same
+material under section 10.
+
+  8. Acceptance Not Required.
+
+  You are not required to accept this License in order to receive or
+run a copy of the Library.  However, nothing other than this License
+grants you permission to propagate or modify any covered work.  These
+actions infringe copyright if you do not accept this License.  Therefore,
+by modifying or propagating a covered work, you indicate your
+acceptance of this License to do so.
+
+  9. Automatic Licensing of Downstream Recipients.
+
+  Each time you convey a covered work, the recipient automatically
+receives a license from the original licensors to run, modify, and
+propagate that work, subject to this License.  You are not responsible
+for enforcing compliance by third parties with this License.
+
+  An "entity transaction" is a transaction transferring control of an
+organization, or substantially all assets of one, or subdividing an
+organization, or merging organizations.  If propagation of a covered
+work results from an entity transaction, each party to that
+transaction who receives a copy of the work also receives whatever
+licenses to the work the party's predecessor in interest had or could
+give under the previous paragraph, plus a right to possession of the
+Corresponding Source of the work from the predecessor in interest,
+if the predecessor has it or can get it with reasonable efforts.
+
+  You may not impose any further restrictions on the exercise of the
+rights granted or affirmed by this License.  For example, you may not
+impose a license fee, royalty, or other charge for exercise of rights
+granted under this License, and you may not initiate litigation
+(including a cross-claim or counterclaim in a lawsuit) alleging that
+any patent claim is infringed by making, using, selling, offering for
+sale, or importing the Library or any portion of it.
+
+  10. Patents.
+
+  A "contributor" is a copyright holder who authorizes use under this
+License of the Library or its derivative works.  A work "based on the
+Library" means either the Library or any derivative work under this
+License.
+
+  Each contributor grants you a non-exclusive, worldwide, royalty-free
+patent license under the contributor's patent claims that are reasonably
+necessary to make, use, sell, offer for sale, import, and otherwise
+run, modify and propagate the contents of its derivative works.
+
+  If you convey a covered work, you rely on permissions granted by
+another contributor.  You may not impose any further restrictions on
+the exercise of the rights granted or affirmed by this License.
+
+  A patent license is "discriminatory" if it does not include in the
+scope of its coverage, prohibits the exercise of, or is conditioned on
+the non-exercise of one or more of the rights that are specifically
+granted under this License.  You may not convey a covered work if you
+are a party to an arrangement with a third party that is in the business
+of distributing software, under which you make payment to the third
+party based on the extent of your activity of conveying the work, and
+under which the third party grants, to any of the parties who would
+receive the covered work from you, a discriminatory patent license
+that is in the interest of that third party.
+
+  Nothing in this License shall be construed as excluding or limiting
+any implied license or other defenses to infringement that may
+otherwise be available to you under applicable patent law.
+
+  11. No Warranty.
+
+  THE LIBRARY IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+LIBRARY OR THE USE OR OTHER DEALINGS IN THE LIBRARY.
+
+  12. Limitation of Liability.
+
+  IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY
+WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
+OF SUCH DAMAGE.
+
+  13. Revised Versions of this License.
+
+  The Free Software Foundation may publish revised and/or new versions of
+the GNU Lesser General Public License from time to time.  Such new versions
+will be similar in spirit to the present version, but may differ in detail
+to address new problems or concerns.
+
+  Each version is given a distinguishing version number.  If the Library
+specifies that a certain numbered version of the GNU Lesser General Public
+License "or any later version" applies to it, you have the option of
+following the terms and conditions either of that published version or
+of any later version published by the Free Software Foundation.  If the
+Library does not specify a license version number, you may choose any
+version ever published by the Free Software Foundation.
+
+  If the Library specifies that a proxy can decide whether future versions
+of the GNU Lesser General Public License shall apply, that proxy's
+public statement of acceptance of any version is permanent authorization
+for you to choose that version for the Library.

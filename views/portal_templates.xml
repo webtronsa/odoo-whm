@@ -1,0 +1,377 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+  <!-- ============================================================
+       CUSTOMER PORTAL TEMPLATES
+       ============================================================ -->
+
+  <!-- Portal My Home Extension -->
+  <template id="portal_my_home_whm" inherit_id="portal.portal_my_home" priority="20">
+    <xpath expr="//div[hasclass('o_portal_doc')]" position="inside">
+      <t t-if="whm_account_count > 0">
+        <div class="col-lg-4 col-md-6">
+          <a href="/my/hosting">
+            <div class="card text-center o_portal_highlight">
+              <div class="card-body">
+                <i class="fa fa-server fa-3x text-primary mb-3"/>
+                <h5 class="card-title">Hosting Accounts</h5>
+                <p class="card-text">
+                  <span t-esc="whm_account_count"/> total
+                  <t t-if="whm_active_account_count > 0">
+                    (<span t-esc="whm_active_account_count"/> active)
+                  </t>
+                </p>
+              </div>
+            </div>
+          </a>
+        </div>
+      </t>
+      
+      <t t-if="whm_domain_count > 0">
+        <div class="col-lg-4 col-md-6">
+          <a href="/my/domains">
+            <div class="card text-center o_portal_highlight">
+              <div class="card-body">
+                <i class="fa fa-globe fa-3x text-info mb-3"/>
+                <h5 class="card-title">Domains</h5>
+                <p class="card-text">
+                  <span t-esc="whm_domain_count"/> domains
+                </p>
+              </div>
+            </div>
+          </a>
+        </div>
+      </t>
+    </xpath>
+  </template>
+
+  <!-- Portal Navigation Extension -->
+  <template id="portal_breadcrumbs_whm" inherit_id="portal.portal_breadcrumbs" priority="20">
+    <xpath expr="//ol[hasclass('breadcrumb')]" position="inside">
+      <t t-if="page_name == 'hosting'">
+        <li class="breadcrumb-item active">
+          <span>Hosting Accounts</span>
+        </li>
+      </t>
+      <t t-if="page_name == 'domains'">
+        <li class="breadcrumb-item active">
+          <span>Domains</span>
+        </li>
+      </t>
+      <t t-if="page_name == 'hosting_setup'">
+        <li class="breadcrumb-item">
+          <a href="/my/hosting">Hosting Accounts</a>
+        </li>
+        <li class="breadcrumb-item active">
+          <span>Setup</span>
+        </li>
+      </t>
+      <t t-if="page_name == 'billing'">
+        <li class="breadcrumb-item active">
+          <span>Billing</span>
+        </li>
+      </t>
+      <t t-if="page_name == 'support'">
+        <li class="breadcrumb-item active">
+          <span>Support</span>
+        </li>
+      </t>
+    </xpath>
+  </template>
+
+  <!-- Portal Layout Extension -->
+  <template id="portal_layout_whm" inherit_id="portal.portal_layout" priority="20">
+    <xpath expr="//div[hasclass('o_portal_my_details')]/div[hasclass('container')]/div[hasclass('row')]" position="inside">
+      <t t-if="page_name in ['hosting', 'domains', 'hosting_setup', 'billing', 'support']">
+        <div class="col-lg-2 d-none d-lg-block">
+          <nav class="nav flex-column o_portal_sidebar">
+            <a class="nav-link" href="/my/hosting" t-att-class="'active' if page_name == 'hosting' else ''">
+              <i class="fa fa-server me-2"/>Hosting Accounts
+            </a>
+            <a class="nav-link" href="/my/domains" t-att-class="'active' if page_name == 'domains' else ''">
+              <i class="fa fa-globe me-2"/>Domains
+            </a>
+            <a class="nav-link" href="/my/billing/whm" t-att-class="'active' if page_name == 'billing' else ''">
+              <i class="fa fa-credit-card me-2"/>Billing
+            </a>
+            <a class="nav-link" href="/my/support/whm" t-att-class="'active' if page_name == 'support' else ''">
+              <i class="fa fa-headphones me-2"/>Support
+            </a>
+          </nav>
+        </div>
+      </t>
+    </xpath>
+  </template>
+
+  <!-- Portal My Hosting Account Details -->
+  <template id="portal_hosting_account" name="WHM Hosting Account Details">
+    <t t-call="portal.portal_layout">
+      <t t-set="breadcrumbs_searchbar" t-value="True"/>
+      
+      <div class="o_portal_my_details">
+        <div class="container mb-4">
+          <div class="row">
+            <div class="col-lg-8">
+              <h3>Hosting Account Details</h3>
+              <p t-esc="account.name"/>
+            </div>
+            <div class="col-lg-4 text-end">
+              <t t-if="account.state == 'active'">
+                <a t-attf-href="/my/hosting/#{account.id}/login" class="btn btn-primary">
+                  <i class="fa fa-sign-in me-1"/> Login to cPanel
+                </a>
+              </t>
+            </div>
+          </div>
+        </div>
+
+        <div class="container">
+          <div class="card mb-4">
+            <div class="card-header">
+              <h5>Account Information</h5>
+            </div>
+            <div class="card-body">
+              <div class="row">
+                <div class="col-md-6">
+                  <table class="table table-sm">
+                    <tr>
+                      <td><strong>Account Name:</strong></td>
+                      <td t-esc="account.name"/>
+                    </tr>
+                    <tr>
+                      <td><strong>cPanel Username:</strong></td>
+                      <td><code t-esc="account.cpanel_username"/></td>
+                    </tr>
+                    <tr>
+                      <td><strong>Primary Domain:</strong></td>
+                      <td t-esc="account.cpanel_domain or 'Not configured'"/>
+                    </tr>
+                    <tr>
+                      <td><strong>Package:</strong></td>
+                      <td t-esc="account.whm_package"/>
+                    </tr>
+                    <tr>
+                      <td><strong>Server:</strong></td>
+                      <td t-esc="account.server_id.name"/>
+                    </tr>
+                  </table>
+                </div>
+                <div class="col-md-6">
+                  <table class="table table-sm">
+                    <tr>
+                      <td><strong>Status:</strong></td>
+                      <td>
+                        <span class="badge badge-#{account.state == 'active' ? 'success' : account.state == 'suspended' ? 'warning' : account.state == 'error' ? 'danger' : 'info'}">
+                          <t t-esc="account.state.upper()"/>
+                        </span>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td><strong>Billing Cycle:</strong></td>
+                      <td t-esc="account.billing_cycle"/>
+                    </tr>
+                    <tr>
+                      <td><strong>Next Due Date:</strong></td>
+                      <td t-if="account.next_due_date">
+                        <t t-esc="account.next_due_date.strftime('%B %d, %Y')"/>
+                      </td>
+                      <td t-else="">Not set</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Created:</strong></td>
+                      <td t-esc="account.create_date.strftime('%B %d, %Y')"/>
+                    </tr>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card mb-4" t-if="account.state == 'active' and account.disk_used">
+            <div class="card-header">
+              <h5>Resource Usage</h5>
+            </div>
+            <div class="card-body">
+              <div class="row">
+                <div class="col-md-6">
+                  <h6>Disk Usage</h6>
+                  <div class="progress mb-2">
+                    <div class="progress-bar" role="progressbar" 
+                         t-attf-style="width: #{(account.disk_used / account.disk_limit * 100) if account.disk_limit > 0 else 0}%"
+                         t-att-aria-valuenow="account.disk_used" 
+                         t-aria-valuemin="0" 
+                         t-aria-valuemax="account.disk_limit">
+                      <t t-esc="account.disk_used"/> MB
+                    </div>
+                  </div>
+                  <small class="text-muted">
+                    <t t-esc="account.disk_used"/> / <t t-esc="account.disk_limit"/> MB
+                  </small>
+                </div>
+                <div class="col-md-6">
+                  <h6>Bandwidth Usage</h6>
+                  <div class="progress mb-2">
+                    <div class="progress-bar bg-info" role="progressbar" 
+                         t-attf-style="width: #{(account.bw_used / account.bw_limit * 100) if account.bw_limit > 0 else 0}%"
+                         t-att-aria-valuenow="account.bw_used" 
+                         t-aria-valuemin="0" 
+                         t-aria-valuemax="account.bw_limit">
+                      <t t-esc="account.bw_used"/> MB
+                    </div>
+                  </div>
+                  <small class="text-muted">
+                    <t t-esc="account.bw_used"/> / <t t-esc="account.bw_limit"/> MB
+                  </small>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card mb-4" t-if="domains">
+            <div class="card-header">
+              <h5>Domains</h5>
+            </div>
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th>Domain</th>
+                      <th>Type</th>
+                      <th>Status</th>
+                      <th>SSL</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr t-foreach="domains" t-as="domain">
+                      <td>
+                        <t t-esc="domain.name"/>
+                        <span t-if="domain.is_primary" class="badge badge-primary ms-1">Primary</span>
+                      </td>
+                      <td>
+                        <span t-if="domain.is_primary">Primary Domain</span>
+                        <span t-else="">Addon Domain</span>
+                      </td>
+                      <td>
+                        <span class="badge badge-#{domain.state == 'active' ? 'success' : domain.state == 'suspended' ? 'warning' : 'secondary'}">
+                          <t t-esc="domain.state"/>
+                        </span>
+                      </td>
+                      <td>
+                        <i t-if="domain.ssl_enabled" class="fa fa-lock text-success"/>
+                        <i t-else="" class="fa fa-unlock text-muted"/>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <h5>Quick Actions</h5>
+            </div>
+            <div class="card-body">
+              <div class="row">
+                <div class="col-md-3 mb-2" t-if="account.state == 'active'">
+                  <a t-attf-href="/my/hosting/#{account.id}/login" class="btn btn-primary btn-sm w-100">
+                    <i class="fa fa-sign-in me-1"/> Login to cPanel
+                  </a>
+                </div>
+                <div class="col-md-3 mb-2">
+                  <a t-attf-href="/my/support/whm/create?account_id=#{account.id}" class="btn btn-outline-secondary btn-sm w-100">
+                    <i class="fa fa-headphones me-1"/> Get Support
+                  </a>
+                </div>
+                <div class="col-md-3 mb-2">
+                  <a t-attf-href="/my/billing/whm" class="btn btn-outline-info btn-sm w-100">
+                    <i class="fa fa-credit-card me-1"/> View Billing
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </t>
+  </template>
+
+  <!-- Portal My Domains -->
+  <template id="portal_my_domains" name="My Domains">
+    <t t-call="portal.portal_layout">
+      <t t-set="breadcrumbs_searchbar" t-value="True"/>
+      
+      <div class="o_portal_my_details">
+        <div class="container mb-4">
+          <div class="row">
+            <div class="col-lg-8">
+              <h3>My Domains</h3>
+              <p>Manage your domain names and DNS settings.</p>
+            </div>
+            <div class="col-lg-4 text-end">
+              <t t-call="portal.pager"/>
+            </div>
+          </div>
+        </div>
+
+        <div class="container">
+          <t t-if="not domains">
+            <div class="alert alert-info">
+              <i class="fa fa-info-circle me-2"/>
+              You don't have any domains yet. 
+              <a href="/shop">Browse our hosting plans</a> to get started with a free domain.
+            </div>
+          </t>
+
+          <t t-foreach="domains" t-as="domain">
+            <div class="card mb-3">
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-md-8">
+                    <h5 class="card-title">
+                      <t t-esc="domain.name"/>
+                      <span t-if="domain.is_primary" class="badge badge-primary ms-1">Primary</span>
+                      <span class="badge badge-#{domain.state == 'active' ? 'success' : domain.state == 'suspended' ? 'warning' : 'secondary'} ms-1">
+                        <t t-esc="domain.state"/>
+                      </span>
+                    </h5>
+                    <p class="card-text">
+                      <strong>Account:</strong> <t t-esc="domain.hosting_account_id.name"/><br/>
+                      <strong>Package:</strong> <t t-esc="domain.hosting_account_id.whm_package"/><br/>
+                      <strong>Server:</strong> <t t-esc="domain.hosting_account_id.server_id.name"/>
+                    </p>
+                    <t t-if="domain.expiry_date">
+                      <p class="card-text">
+                        <strong>Expiry Date:</strong> 
+                        <t t-esc="domain.expiry_date.strftime('%B %d, %Y')"/>
+                        <t t-if="domain.auto_renew" class="badge bg-success ms-1">Auto-renew enabled</t>
+                      </p>
+                    </t>
+                  </div>
+                  <div class="col-md-4 text-end">
+                    <div class="mb-2">
+                      <i t-if="domain.ssl_enabled" class="fa fa-lock text-success me-1"/>
+                      <i t-else="" class="fa fa-unlock text-muted me-1"/>
+                      SSL <t t-if="domain.ssl_enabled">Enabled</t><t t-else="">Not Enabled</t>
+                    </div>
+                    <a t-attf-href="/my/domains/#{domain.id}" class="btn btn-outline-primary btn-sm">
+                      <i class="fa fa-cog me-1"/> Manage
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </t>
+
+          <div class="row">
+            <div class="col-lg-8">
+              <t t-call="portal.pager"/>
+            </div>
+          </div>
+        </div>
+      </div>
+    </t>
+  </template>
+
+</odoo>

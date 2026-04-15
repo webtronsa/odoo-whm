@@ -1,0 +1,377 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+  <!-- ============================================================
+       WHM HOSTING ACCOUNT VIEWS
+       ============================================================ -->
+
+  <!-- Tree View -->
+  <record id="view_whm_hosting_account_tree" model="ir.ui.view">
+    <field name="name">whm.hosting.account.tree</field>
+    <field name="model">whm.hosting.account</field>
+    <field name="arch" type="xml">
+      <list string="Hosting Accounts" decoration-success="state == 'active'"
+            decoration-danger="state == 'error' or state == 'terminated'"
+            decoration-warning="state == 'suspended'"
+            decoration-info="state in ('provisioning','pending')">
+        <field name="name"/>
+        <field name="partner_id"/>
+        <field name="cpanel_username"/>
+        <field name="cpanel_domain"/>
+        <field name="whm_package"/>
+        <field name="server_id"/>
+        <field name="disk_used"/>
+        <field name="disk_limit"/>
+        <field name="state" widget="badge"
+               decoration-success="state == 'active'"
+               decoration-danger="state in ('error','terminated')"
+               decoration-warning="state == 'suspended'"
+               decoration-info="state in ('provisioning','pending')"/>
+        <field name="next_due_date"/>
+      </list>
+    </field>
+  </record>
+
+  <!-- Form View -->
+  <record id="view_whm_hosting_account_form" model="ir.ui.view">
+    <field name="name">whm.hosting.account.form</field>
+    <field name="model">whm.hosting.account</field>
+    <field name="arch" type="xml">
+      <form string="Hosting Account">
+        <header>
+          <button name="action_provision" string="Provision Now"
+                  type="object" class="btn-primary"
+                  invisible="state not in ('pending','error')"/>
+          <button name="action_retry_provisioning" string="Retry Provisioning"
+                  type="object" class="btn-warning"
+                  invisible="state != 'error'"/>
+          <button name="action_test_connection" string="Test Connection"
+                  type="object" class="btn-secondary"/>
+          <button name="action_sync_usage" string="Sync Usage"
+                  type="object" class="btn-info"
+                  invisible="state != 'active'"/>
+          <button name="action_suspend" string="Suspend"
+                  type="object" class="btn-warning"
+                  invisible="state != 'active'"/>
+          <button name="action_unsuspend" string="Unsuspend"
+                  type="object" class="btn-success"
+                  invisible="state != 'suspended'"/>
+          <button name="action_terminate" string="Terminate"
+                  type="object" class="btn-danger"
+                  invisible="state not in ('active','suspended')"
+                  confirm="Are you sure you want to terminate this account?"/>
+          <field name="state" widget="statusbar"
+                 statusbar_visible="pending,provisioning,active,suspended"/>
+        </header>
+        <sheet>
+          <div class="oe_button_box" name="button_box">
+            <button name="action_sync_usage" type="object" class="oe_stat_button" icon="fa-sync"
+                    invisible="state != 'active'">
+              <field name="disk_used" widget="statinfo" string="Disk Used (MB)"/>
+            </button>
+            <button name="action_sync_usage" type="object" class="oe_stat_button" icon="fa-tachometer-alt"
+                    invisible="state != 'active'">
+              <field name="bw_used" widget="statinfo" string="Bandwidth Used (MB)"/>
+            </button>
+          </div>
+          
+          <group>
+            <group string="Account Information">
+              <field name="name"/>
+              <field name="partner_id"/>
+              <field name="server_id"/>
+              <field name="product_id"/>
+              <field name="sale_order_id"/>
+              <field name="whm_package"/>
+              <field name="reseller"/>
+            </group>
+            <group string="cPanel Details">
+              <field name="cpanel_username"/>
+              <field name="cpanel_domain"/>
+              <field name="cpanel_password" password="True" invisible="state != 'pending'"/>
+              <field name="dedicated_ip"/>
+            </group>
+          </group>
+          
+          <group string="Resource Limits" invisible="state != 'active'">
+            <group>
+              <field name="disk_used" string="Disk Used (MB)"/>
+              <field name="disk_limit" string="Disk Limit (MB)"/>
+              <field name="max_addon_domains"/>
+              <field name="max_parked_domains"/>
+            </group>
+            <group>
+              <field name="bw_used" string="Bandwidth Used (MB)"/>
+              <field name="bw_limit" string="Bandwidth Limit (MB)"/>
+              <field name="max_email_accounts"/>
+              <field name="max_databases"/>
+            </group>
+          </group>
+          
+          <group string="Billing Information">
+            <group>
+              <field name="billing_cycle"/>
+              <field name="next_due_date"/>
+              <field name="auto_renew"/>
+            </group>
+            <group>
+              <field name="first_payment_amount"/>
+              <field name="recurring_amount"/>
+            </group>
+          </group>
+          
+          <group string="Domains">
+            <field name="domain_ids" nolabel="1">
+              <tree>
+                <field name="name"/>
+                <field name="is_primary"/>
+                <field name="state"/>
+                <field name="ssl_enabled"/>
+              </tree>
+            </field>
+          </group>
+          
+          <group string="Provisioning Notes" invisible="not provisioning_notes">
+            <field name="provisioning_notes" readonly="1" nolabel="1"/>
+          </group>
+          
+          <group string="Error Information" invisible="not last_error">
+            <field name="last_error" readonly="1" nolabel="1"/>
+          </group>
+        </sheet>
+        <chatter/>
+      </form>
+    </field>
+  </record>
+
+  <!-- Kanban View -->
+  <record id="view_whm_hosting_account_kanban" model="ir.ui.view">
+    <field name="name">whm.hosting.account.kanban</field>
+    <field name="model">whm.hosting.account</field>
+    <field name="arch" type="xml">
+      <kanban string="Hosting Accounts" default_group_by="state">
+        <field name="name"/>
+        <field name="partner_id"/>
+        <field name="cpanel_username"/>
+        <field name="cpanel_domain"/>
+        <field name="whm_package"/>
+        <field name="server_id"/>
+        <field name="disk_used"/>
+        <field name="disk_limit"/>
+        <field name="state"/>
+        <templates>
+          <t t-name="kanban-box">
+            <div t-attf-class="oe_kanban_card oe_kanban_global_click">
+              <div class="o_kanban_card_header">
+                <div class="o_kanban_manage_header_section">
+                  <strong class="o_kanban_record_title">
+                    <field name="name"/>
+                  </strong>
+                </div>
+                <div class="o_kanban_manage_header_section">
+                  <span class="badge badge-#{record.state.raw_value == 'active' ? 'success' : record.state.raw_value == 'error' ? 'danger' : record.state.raw_value == 'suspended' ? 'warning' : 'info'}">
+                    <field name="state"/>
+                  </span>
+                </div>
+              </div>
+              <div class="o_kanban_card_content">
+                <div class="row">
+                  <div class="col-6">
+                    <strong>Customer:</strong><br/>
+                    <field name="partner_id"/>
+                  </div>
+                  <div class="col-6">
+                    <strong>cPanel:</strong><br/>
+                    <field name="cpanel_username"/>
+                  </div>
+                </div>
+                <div class="row mt-2">
+                  <div class="col-6">
+                    <strong>Package:</strong><br/>
+                    <field name="whm_package"/>
+                  </div>
+                  <div class="col-6">
+                    <strong>Server:</strong><br/>
+                    <field name="server_id"/>
+                  </div>
+                </div>
+                <div class="row mt-2" t-if="record.disk_used.raw_value">
+                  <div class="col-12">
+                    <strong>Disk Usage:</strong>
+                    <field name="disk_used"/> MB / <field name="disk_limit"/> MB
+                  </div>
+                </div>
+              </div>
+            </div>
+          </t>
+        </templates>
+      </kanban>
+    </field>
+  </record>
+
+  <!-- Search View -->
+  <record id="view_whm_hosting_account_search" model="ir.ui.view">
+    <field name="name">whm.hosting.account.search</field>
+    <field name="model">whm.hosting.account</field>
+    <field name="arch" type="xml">
+      <search string="Hosting Accounts">
+        <field name="name"/>
+        <field name="partner_id"/>
+        <field name="cpanel_username"/>
+        <field name="cpanel_domain"/>
+        <field name="whm_package"/>
+        <field name="server_id"/>
+        <field name="state"/>
+        
+        <filter string="Active" name="active" domain="[('state', '=', 'active')]"/>
+        <filter string="Pending" name="pending" domain="[('state', '=', 'pending')]"/>
+        <filter string="Provisioning" name="provisioning" domain="[('state', '=', 'provisioning')]"/>
+        <filter string="Suspended" name="suspended" domain="[('state', '=', 'suspended')]"/>
+        <filter string="Error" name="error" domain="[('state', '=', 'error')]"/>
+        
+        <separator/>
+        <filter string="My Accounts" name="my_accounts" domain="[('partner_id', '=', uid)]"/>
+        
+        <separator/>
+        <filter string="Due Soon" name="due_soon" 
+                domain="[('next_due_date', '&lt;=', (context_today() + relativedelta(days=7)).strftime('%Y-%m-%d'))]"/>
+        
+        <group expand="0" string="Group By">
+          <filter string="State" name="group_state" context="{'group_by': 'state'}"/>
+          <filter string="Customer" name="group_partner" context="{'group_by': 'partner_id'}"/>
+          <filter string="Server" name="group_server" context="{'group_by': 'server_id'}"/>
+          <filter string="Package" name="group_package" context="{'group_by': 'whm_package'}"/>
+          <filter string="Billing Cycle" name="group_billing" context="{'group_by': 'billing_cycle'}"/>
+        </group>
+      </search>
+    </field>
+  </record>
+
+  <!-- Action -->
+  <record id="action_whm_hosting_account" model="ir.actions.act_window">
+    <field name="name">Hosting Accounts</field>
+    <field name="res_model">whm.hosting.account</field>
+    <field name="view_mode">kanban,tree,form</field>
+    <field name="help" type="html">
+      <p class="o_view_nocontent_smiling_face">
+        Create your first hosting account
+      </p>
+      <p>
+        Hosting accounts represent cPanel accounts managed through WHM servers.
+        They can be automatically provisioned when customers purchase hosting products.
+      </p>
+    </field>
+  </record>
+
+  <!-- ============================================================
+       EMAIL TEMPLATES
+       ============================================================ -->
+
+  <!-- Welcome Email Template -->
+  <record id="email_hosting_welcome" model="mail.template">
+    <field name="name">WHM Hosting - Welcome Email</field>
+    <field name="model_id" ref="model_whm_hosting_account"/>
+    <field name="subject">Your Hosting Account is Ready - Login Details Inside</field>
+    <field name="email_from">${object.server_id.from_email or 'noreply@whmhosting.com'}</field>
+    <field name="email_to">${object.partner_id.email}</field>
+    <field name="body_html" type="html">
+<div style="font-family:Arial, sans-serif;max-width:600px;margin:0 auto;background:#f8f9fa;padding:20px">
+  <div style="background:linear-gradient(135deg,#2c3e50,#3498db);color:white;border-radius:12px;padding:32px;text-align:center;margin-bottom:20px">
+    <h1 style="margin:0;font-size:1.8em">Welcome to WHM Hosting</h1>
+    <p style="margin:8px 0 0">Your hosting account is ready to use</p>
+  </div>
+
+  <div style="background:white;border-radius:12px;padding:28px;margin-bottom:16px">
+    <h2 style="color:#2c3e50;margin-top:0">Hi <t t-out="object.partner_id.name"/>,</h2>
+    <p style="color:#555;line-height:1.6">
+      Your hosting account has been successfully created on our servers.
+      You can now log into your cPanel control panel using the details below.
+    </p>
+  </div>
+
+  <div style="background:white;border-radius:12px;padding:28px;margin-bottom:16px;border-left:4px solid #27ae60">
+    <h3 style="color:#2c3e50;margin-top:0">Your cPanel Login Details</h3>
+    <table style="width:100%;border-collapse:collapse">
+      <tr>
+        <td style="padding:8px 0;color:#6c757d;width:40%">cPanel URL</td>
+        <td style="padding:8px 0;font-weight:700">
+          <a href="#" style="color:#3498db">https://<t t-out="object.server_id.hostname"/>:2083</a>
+        </td>
+      </tr>
+      <tr style="border-top:1px solid #f0f0f0">
+        <td style="padding:8px 0;color:#6c757d">Username</td>
+        <td style="padding:8px 0;font-weight:700;font-family:monospace">
+          <t t-out="object.cpanel_username"/>
+        </td>
+      </tr>
+      <tr style="border-top:1px solid #f0f0f0">
+        <td style="padding:8px 0;color:#6c757d">Domain</td>
+        <td style="padding:8px 0;font-weight:700;font-family:monospace">
+          <t t-out="object.cpanel_domain or 'To be configured'"/>
+        </td>
+      </tr>
+      <tr style="border-top:1px solid #f0f0f0">
+        <td style="padding:8px 0;color:#6c757d">Package</td>
+        <td style="padding:8px 0;font-weight:700"><t t-out="object.whm_package"/></td>
+      </tr>
+    </table>
+  </div>
+
+  <div style="background:#fff3cd;border-radius:12px;padding:20px;margin-bottom:16px;border-left:4px solid #ffc107">
+    <p style="margin:0;color:#856404">
+      <strong>Security Note:</strong> Please change your cPanel password after first login.
+      Keep your login credentials secure and never share them with others.
+    </p>
+  </div>
+
+  <div style="text-align:center;padding:20px;color:#6c757d;font-size:0.8em">
+    <p>WHM Hosting Solutions • support@whmhosting.com</p>
+  </div>
+</div>
+    </field>
+    <field name="auto_delete" eval="True"/>
+  </record>
+
+  <!-- Suspension Email Template -->
+  <record id="email_hosting_suspended" model="mail.template">
+    <field name="name">WHM Hosting - Account Suspended</field>
+    <field name="model_id" ref="model_whm_hosting_account"/>
+    <field name="subject">Your Hosting Account Has Been Suspended</field>
+    <field name="email_from">${object.server_id.from_email or 'noreply@whmhosting.com'}</field>
+    <field name="email_to">${object.partner_id.email}</field>
+    <field name="body_html" type="html">
+<div style="font-family:Arial, sans-serif;max-width:600px;margin:0 auto;background:#f8f9fa;padding:20px">
+  <div style="background:linear-gradient(135deg,#e74c3c,#c0392b);color:white;border-radius:12px;padding:32px;text-align:center;margin-bottom:20px">
+    <h1 style="margin:0;font-size:1.8em">Account Suspended</h1>
+    <p style="margin:8px 0 0">Your hosting account has been temporarily suspended</p>
+  </div>
+
+  <div style="background:white;border-radius:12px;padding:28px;margin-bottom:16px">
+    <h2 style="color:#2c3e50;margin-top:0">Hi <t t-out="object.partner_id.name"/>,</h2>
+    <p style="color:#555;line-height:1.6">
+      Your hosting account <strong><t t-out="object.cpanel_username"/></strong> has been suspended.
+      This may be due to billing issues, resource overuse, or policy violations.
+    </p>
+    
+    <p style="color:#555;line-height:1.6">
+      Please contact our support team to resolve this issue and restore your account.
+    </p>
+  </div>
+
+  <div style="background:#fff3cd;border-radius:12px;padding:20px;margin-bottom:16px;border-left:4px solid #ffc107">
+    <p style="margin:0;color:#856404">
+      <strong>Account Details:</strong><br>
+      Username: <t t-out="object.cpanel_username"/><br>
+      Domain: <t t-out="object.cpanel_domain or 'Not configured'"/>
+    </p>
+  </div>
+
+  <div style="text-align:center;padding:20px;color:#6c757d;font-size:0.8em">
+    <p>WHM Hosting Solutions • support@whmhosting.com</p>
+  </div>
+</div>
+    </field>
+    <field name="auto_delete" eval="True"/>
+  </record>
+
+</odoo>

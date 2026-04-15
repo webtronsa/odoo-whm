@@ -1,0 +1,417 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+  <!-- ============================================================
+       HOSTING SETUP PORTAL TEMPLATE
+       ============================================================ -->
+
+  <template id="portal_hosting_setup_form" name="WHM Hosting Setup Form">
+    <t t-call="portal.portal_layout">
+
+      <style>
+        .whs-hero{background:linear-gradient(135deg,#2c3e50,#3498db);color:white;border-radius:14px;padding:32px;margin-bottom:24px;text-align:center}
+        .whs-hero h2{color:white;font-weight:800;margin-bottom:8px;font-size:1.6em}
+        .whs-hero p{color:#ecf0f1;margin:0;font-size:.9em}
+        .whs-pkg{display:inline-flex;align-items:center;gap:10px;background:rgba(52,152,219,.15);border:1px solid rgba(52,152,219,.4);border-radius:10px;padding:10px 20px;margin-top:16px}
+        .whs-pkg-name{font-weight:800;color:#3498db;font-size:1em}
+        .whs-pkg-specs{font-size:.72em;color:#7f8c8d;margin-top:2px}
+        .whs-card{border-radius:14px;border:1px solid #dee2e6;overflow:hidden;margin-bottom:20px}
+        .whs-card .card-header{background:#f8f9fa;border-bottom:2px solid #27ae60;padding:16px 22px}
+        .whs-card .card-header h5{margin:0;font-weight:700;color:#2c3e50;font-size:.95em}
+        .whs-card .card-body{padding:24px}
+        .form-label{font-weight:600;font-size:.85em;color:#2c3e50;margin-bottom:4px}
+        .form-text{font-size:.75em;color:#6c757d;margin-top:3px}
+        .form-control:focus{border-color:#27ae60;box-shadow:0 0 0 3px rgba(39,174,96,.15)}
+        .btn-activate{background:#27ae60;color:white;border:none;padding:13px 32px;font-weight:700;border-radius:8px;font-size:1em;width:100%;transition:background .2s}
+        .btn-activate:hover{background:#219a52;color:white}
+        .pwd-bar{height:4px;border-radius:2px;margin-top:6px;transition:width .3s,background .3s;background:#dee2e6;width:0}
+        .domain-row{display:flex;gap:8px}
+        .domain-row .form-control{flex:1}
+        .chk-btn{background:#f8f9fa;border:1px solid #dee2e6;border-radius:8px;padding:8px 16px;font-size:.82em;font-weight:700;color:#2c3e50;cursor:pointer;white-space:nowrap;flex-shrink:0}
+        .chk-btn:hover{background:#e9ecef}
+        .chk-btn:disabled{opacity:.6;cursor:default}
+        .d-result{border-radius:10px;padding:12px 16px;margin-top:10px;display:none;font-size:.85em}
+        .d-result.show{display:block}
+        .d-result.available{background:#f0fff4;border:2px solid #27ae60}
+        .d-result.taken{background:#fff5f5;border:2px solid #e74c3c}
+        .d-result.checking{background:#f0f9ff;border:2px solid #3498db}
+        .d-result.unknown{background:#fffbf0;border:2px solid #f39c12}
+        .d-title{font-weight:700;margin-bottom:4px}
+        .d-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+        .da{padding:7px 14px;border-radius:6px;font-size:.8em;font-weight:700;border:none;cursor:pointer}
+        .da-reg{background:#27ae60;color:white}
+        .da-tra{background:#3498db;color:white}
+        .da-ext{background:#6c757d;color:white}
+        .da-skp{background:#f8f9fa;color:#6c757d;border:1px solid #dee2e6}
+        .da.sel{outline:3px solid #2c3e50;outline-offset:2px}
+        .epp-box{background:#fff8e1;border:1px solid #f39c12;border-radius:8px;padding:12px 14px;margin-top:10px;display:none}
+        .epp-box.show{display:block}
+        .spin{display:inline-block;width:12px;height:12px;border:2px solid #3498db;border-top-color:transparent;border-radius:50%;animation:sp .6s linear infinite;margin-right:5px;vertical-align:middle}
+        @keyframes sp{to{transform:rotate(360deg)}}
+        .info-banner{background:#f0f9ff;border:1px solid #bee3f8;border-radius:8px;padding:12px 16px;font-size:.83em;color:#2c3e50;margin-bottom:16px}
+        .server-info{background:#fff3cd;border:1px solid #ffc107;border-radius:8px;padding:12px 16px;margin-bottom:16px}
+      </style>
+
+      <div class="container py-4" style="max-width:620px">
+
+        <div class="whs-hero">
+          <div style="font-size:2.2em;margin-bottom:8px">🌐</div>
+          <h2>Setup Your Hosting Account</h2>
+          <p>Configure your hosting account below — takes less than a minute.</p>
+          <t t-if="hosting_account">
+            <t t-set="sp" t-value="{'Basic':'5GB Disk • 25 Email • 5 DB • 5 Addon Domains','Professional':'25GB Disk • 50 Email • 10 DB • 15 Addon Domains','Enterprise':'50GB Disk • Unlimited Everything'}"/>
+            <div class="whs-pkg">
+              <div>
+                <div class="whs-pkg-name"><i class="fa fa-server me-1"/><t t-esc="hosting_account.whm_package"/></div>
+                <div class="whs-pkg-specs"><t t-esc="sp.get(hosting_account.whm_package,'Web Hosting')"/></div>
+              </div>
+            </div>
+          </t>
+        </div>
+
+        <t t-if="error">
+          <div class="alert alert-danger mb-3">
+            <i class="fa fa-exclamation-circle me-2"/><span t-esc="error"/>
+          </div>
+        </t>
+
+        <form t-attf-action="/my/hosting/setup/{{ order.id }}/submit" method="post">
+          <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+          <input type="hidden" name="domain_action" id="domain_action" value="none"/>
+          <input type="hidden" name="epp_code" id="epp_hidden" value=""/>
+
+          <!-- SERVER INFO -->
+          <div class="server-info">
+            <i class="fa fa-info-circle me-2" style="color:#856404"/>
+            <strong>Server:</strong> <t t-esc="hosting_account.server_id.name"/> 
+            (<t t-esc="hosting_account.server_id.hostname"/>)
+          </div>
+
+          <!-- DOMAIN CARD -->
+          <div class="whs-card shadow-sm">
+            <div class="card-header">
+              <h5><i class="fa fa-globe me-2" style="color:#27ae60"/>Domain Name</h5>
+            </div>
+            <div class="card-body">
+              <label class="form-label">Your Domain <span class="text-muted">(optional)</span></label>
+              <div class="domain-row">
+                <input type="text" name="domain" id="d-input" class="form-control"
+                       placeholder="e.g. yourbusiness.com"/>
+                <button type="button" class="chk-btn" id="chk-btn" onclick="doCheck()">Check</button>
+              </div>
+              <div class="form-text">Leave blank to use a temporary subdomain.</div>
+
+              <div class="d-result" id="d-result">
+                <div class="d-title" id="d-title"></div>
+                <div id="d-detail" style="color:#555;font-size:.9em"></div>
+                <div class="d-actions" id="d-actions"></div>
+              </div>
+
+              <div class="epp-box" id="epp-box">
+                <div style="font-weight:700;margin-bottom:6px;font-size:.88em">&#128272; Transfer Authorization Code</div>
+                <p style="margin-bottom:8px;color:#555;font-size:.82em">
+                  Enter the EPP / Auth code from your current registrar to start the transfer process.
+                </p>
+                <input type="text" id="epp-input" class="form-control form-control-sm"
+                       placeholder="EPP / Authorization Code"/>
+                <div class="form-text">Find this in your current registrar's domain control panel.</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- PASSWORD CARD -->
+          <div class="whs-card shadow-sm">
+            <div class="card-header">
+              <h5><i class="fa fa-lock me-2" style="color:#27ae60"/>cPanel Password</h5>
+            </div>
+            <div class="card-body">
+              <div class="mb-3">
+                <label class="form-label">Password <span class="text-danger">*</span></label>
+                <input type="password" name="password" id="pwd" class="form-control"
+                       placeholder="Min. 10 chars with uppercase, number and symbol" minlength="10" required="required"/>
+                <div class="pwd-bar" id="pwd-bar" style="height:6px;border-radius:3px;margin-top:6px;transition:width .3s,background .3s;background:#dee2e6;width:0"/>
+                <div class="form-text" id="pwd-lbl" style="margin-top:4px">
+                  WHM requires a <strong>strong password</strong>: min 10 characters with uppercase, lowercase, number and symbol (e.g. <code>MyHost@2026!</code>)
+                </div>
+              </div>
+              <div>
+                <label class="form-label">Confirm Password <span class="text-danger">*</span></label>
+                <input type="password" name="confirm" class="form-control"
+                       placeholder="Repeat your password" required="required"/>
+              </div>
+              <div id="pwd-error" class="alert alert-danger mt-2" style="display:none;font-size:0.85em"/>
+            </div>
+          </div>
+
+          <div class="info-banner">
+            <i class="fa fa-info-circle me-2" style="color:#3498db"/>
+            Your cPanel username and full login details will be emailed to you.
+            Your hosting will be active within <strong>5 minutes</strong>.
+          </div>
+
+          <button type="submit" class="btn btn-activate">
+            <i class="fa fa-check-circle me-2"/>Activate My Hosting
+          </button>
+        </form>
+      </div>
+
+      <script>//<![CDATA[
+        document.addEventListener('DOMContentLoaded', function() {
+          var dInput  = document.getElementById('d-input');
+          var eppInput= document.getElementById('epp-input');
+          var pwdInput= document.getElementById('pwd');
+          if (dInput)   dInput.addEventListener('input', function() { scheduleCheck(this.value); });
+          if (eppInput) eppInput.addEventListener('input', function() {
+            document.getElementById('epp_hidden').value = this.value;
+          });
+          if (pwdInput) pwdInput.addEventListener('input', function() { strength(this.value); });
+        });
+
+        var timer=null, lastDom='';
+        function scheduleCheck(v){
+          clearTimeout(timer);
+          if(!v.trim()){reset();return;}
+          timer=setTimeout(doCheck,900);
+        }
+        
+        function doCheck(){
+          var dom=document.getElementById('d-input').value.trim().toLowerCase();
+          if(!dom){reset();return;}
+          if(dom===lastDom)return;
+          if(!/^[a-z0-9]([a-z0-9\-]{0,61}[a-z0-9])?(\.[a-z]{2,})+$/.test(dom)){
+            show('unknown','&#9888;&#65039; Invalid domain format','Enter a valid domain like example.com',false);return;
+          }
+          lastDom=dom;
+          show('checking','<span class="spin"></span>Checking availability...','',false);
+          var btn=document.getElementById('chk-btn');
+          btn.disabled=true;btn.textContent='...';
+          fetch('/whm/check_domain',{
+            method:'POST',
+            headers:{'Content-Type':'application/json'},
+            body:JSON.stringify({"jsonrpc":"2.0","method":"call","params":{"domain":dom}})
+          }).then(function(r){return r.json();}).then(function(d){
+            btn.disabled=false;btn.textContent='Check';
+            var r=d.result||{};
+            if(r.available===true){
+              show('available','&#9989; '+dom+' is available!',
+                'You can register this domain as part of your hosting setup.',true,'avail',dom);
+            }else if(r.available===false){
+              show('taken','&#10060; '+dom+' is already registered.',
+                'You can transfer it to us, or use it with your own DNS.',true,'taken',dom);
+            }else{
+              show('unknown','&#9888;&#65039; '+(r.message||'Could not check'),
+                'You can continue and set up your domain later.',false);
+            }
+          }).catch(function(){
+            btn.disabled=false;btn.textContent='Check';
+            show('unknown','&#9888;&#65039; Check failed','Please try again.',false);
+          });
+        }
+        
+        function show(cls,title,detail,actions,type,dom){
+          var box=document.getElementById('d-result');
+          box.className='d-result show '+cls;
+          document.getElementById('d-title').innerHTML=title;
+          document.getElementById('d-detail').textContent=detail;
+          var act=document.getElementById('d-actions');
+          act.innerHTML='';
+          document.getElementById('epp-box').className='epp-box';
+          document.getElementById('domain_action').value='none';
+          if(!actions)return;
+          if(type==='avail'){
+            mkBtn(act,'da da-reg','&#128722; Register this domain',function(b){sel('register',b,act);});
+            mkBtn(act,'da da-skp','Skip for now',function(b){sel('none',b,act);});
+          }else if(type==='taken'){
+            mkBtn(act,'da da-tra','&#8599;&#65039; Transfer to us',function(b){
+              sel('transfer',b,act);
+              document.getElementById('epp-box').className='epp-box show';
+              document.getElementById('epp-input').focus();
+            });
+            mkBtn(act,'da da-ext','&#10003; I manage DNS elsewhere',function(b){sel('existing',b,act);});
+            mkBtn(act,'da da-skp','Skip for now',function(b){sel('none',b,act);});
+          }
+        }
+        
+        function mkBtn(parent,cls,html,fn){
+          var b=document.createElement('button');
+          b.type='button';b.className=cls;b.innerHTML=html;
+          b.onclick=function(){fn(b);};
+          parent.appendChild(b);
+        }
+        
+        function sel(action,btn,container){
+          document.getElementById('domain_action').value=action;
+          container.querySelectorAll('.da').forEach(function(b){b.classList.remove('sel');});
+          btn.classList.add('sel');
+          if(action!=='transfer'){
+            document.getElementById('epp-box').className='epp-box';
+            document.getElementById('epp_hidden').value='';
+          }
+        }
+        
+        function reset(){
+          lastDom='';
+          document.getElementById('d-result').className='d-result';
+          document.getElementById('epp-box').className='epp-box';
+          document.getElementById('domain_action').value='none';
+        }
+        
+        function strength(v){
+          var bar=document.getElementById('pwd-bar');
+          var lbl=document.getElementById('pwd-lbl');
+          var s=0;
+          if(v.length>=10)s++;
+          if(v.length>=14)s++;
+          if(/[A-Z]/.test(v))s++;
+          if(/[0-9]/.test(v))s++;
+          if(/[^A-Za-z0-9]/.test(v))s++;
+          var c=['#e74c3c','#e74c3c','#e74c3c','#f39c12','#27ae60','#1a7a3e'];
+          var l=['Too short','Too weak for WHM','Too weak for WHM','Fair — add more complexity','Strong','Very strong'];
+          bar.style.background=c[s]||'#dee2e6';
+          bar.style.width=(s*20)+'%';
+          if(s>=3){
+            lbl.textContent=l[s];lbl.style.color=c[s];
+          } else {
+            lbl.innerHTML='WHM requires: min 10 chars + <strong>uppercase</strong> + <strong>number</strong> + <strong>symbol</strong>';
+            lbl.style.color='#e74c3c';
+          }
+          return s;
+        }
+
+        // Block form submission if password too weak
+        var form = document.querySelector('form');
+        if(form){
+          form.addEventListener('submit', function(e){
+            var pwd = document.getElementById('pwd');
+            var confirm = document.querySelector('input[name="confirm"]');
+            var errEl = document.getElementById('pwd-error');
+            var s = strength(pwd.value);
+            if(s < 3){
+              e.preventDefault();
+              errEl.style.display='block';
+              errEl.textContent='Password is too weak for WHM. Use at least 10 characters with uppercase, a number and a symbol (e.g. MyHost@2026!).';
+              pwd.focus();
+              return false;
+            }
+            if(pwd.value !== confirm.value){
+              e.preventDefault();
+              errEl.style.display='block';
+              errEl.textContent='Passwords do not match.';
+              confirm.focus();
+              return false;
+            }
+            errEl.style.display='none';
+          });
+        }
+      //]]>
+      </script>
+
+    </t>
+  </template>
+
+  <!-- ============================================================
+       MY HOSTING ACCOUNTS PORTAL
+       ============================================================ -->
+
+  <template id="portal_my_hosting_accounts" name="My Hosting Accounts">
+    <t t-call="portal.portal_layout">
+      <t t-set="breadcrumbs_searchbar" t-value="True"/>
+      
+      <div class="o_portal_my_details">
+        <div class="container mb-4">
+          <div class="row">
+            <div class="col-lg-8">
+              <h3>My Hosting Accounts</h3>
+              <p>Manage your web hosting accounts and access cPanel.</p>
+            </div>
+            <div class="col-lg-4 text-end">
+              <t t-call="portal.pager"/>
+            </div>
+          </div>
+        </div>
+
+        <div class="container">
+          <t t-if="not accounts">
+            <div class="alert alert-info">
+              <i class="fa fa-info-circle me-2"/>
+              You don't have any hosting accounts yet. 
+              <a href="/shop">Browse our hosting plans</a> to get started.
+            </div>
+          </t>
+
+          <t t-foreach="accounts" t-as="account">
+            <div class="card mb-3">
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-md-8">
+                    <h5 class="card-title">
+                      <t t-esc="account.name"/>
+                      <span class="badge badge-#{account.state == 'active' ? 'success' : account.state == 'suspended' ? 'warning' : account.state == 'error' ? 'danger' : 'info'} ms-2">
+                        <t t-esc="account.state.upper()"/>
+                      </span>
+                    </h5>
+                    <p class="card-text">
+                      <strong>cPanel Username:</strong> <t t-esc="account.cpanel_username"/><br/>
+                      <strong>Domain:</strong> <t t-esc="account.cpanel_domain or 'Not configured'"/><br/>
+                      <strong>Package:</strong> <t t-esc="account.whm_package"/><br/>
+                      <strong>Server:</strong> <t t-esc="account.server_id.name"/>
+                    </p>
+                    <t t-if="account.state == 'active'">
+                      <div class="d-flex gap-2">
+                        <a t-attf-href="/my/hosting/#{account.id}/login" class="btn btn-primary btn-sm">
+                          <i class="fa fa-sign-in me-1"/> Login to cPanel
+                        </a>
+                        <a t-attf-href="/my/hosting/#{account.id}" class="btn btn-outline-secondary btn-sm">
+                          <i class="fa fa-info-circle me-1"/> Details
+                        </a>
+                      </div>
+                    </t>
+                    <t t-else="">
+                      <p class="text-muted">
+                        <i class="fa fa-exclamation-triangle me-1"/>
+                        Account is not active. Contact support for assistance.
+                      </p>
+                    </t>
+                  </div>
+                  <div class="col-md-4">
+                    <t t-if="account.state == 'active' and account.disk_used">
+                      <div class="mb-3">
+                        <small class="text-muted">Disk Usage</small>
+                        <div class="progress">
+                          <div class="progress-bar" role="progressbar" 
+                               t-attf-style="width: #{(account.disk_used / account.disk_limit * 100) if account.disk_limit > 0 else 0}%"
+                               t-att-aria-valuenow="account.disk_used" 
+                               t-aria-valuemin="0" 
+                               t-aria-valuemax="account.disk_limit">
+                            <t t-esc="account.disk_used"/> MB
+                          </div>
+                        </div>
+                        <small class="text-muted">
+                          <t t-esc="account.disk_used"/> / <t t-esc="account.disk_limit"/> MB
+                        </small>
+                      </div>
+                    </t>
+                    <div>
+                      <small class="text-muted">Next Due Date</small><br/>
+                      <strong t-if="account.next_due_date">
+                        <t t-esc="account.next_due_date.strftime('%B %d, %Y')"/>
+                      </strong>
+                      <span t-else="" class="text-muted">Not set</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </t>
+
+          <div class="row">
+            <div class="col-lg-8">
+              <t t-call="portal.pager"/>
+            </div>
+          </div>
+        </div>
+      </div>
+    </t>
+  </template>
+
+</odoo>
