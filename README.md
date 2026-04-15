@@ -1,6 +1,6 @@
-# WHM/cPanel Hosting Management for Odoo 19
+# WHM/cPanel Hosting Management for Odoo 19 - Complete WHMCS Alternative
 
-A comprehensive WHM/cPanel hosting automation and billing platform for Odoo 19 that replicates WHMCS functionality with seamless integration into your existing Odoo ecosystem.
+A comprehensive WHM/cPanel hosting automation and billing platform for Odoo 19 that serves as a complete WHMCS alternative with seamless integration into your existing Odoo ecosystem.
 
 ## � File Structure
 

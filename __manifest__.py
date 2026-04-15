@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 {
-    "name": "WHM/cPanel Hosting Management",
+    "name": "WHM Hosting Management - Complete WHMCS Alternative",
     "version": "19.0.1.0",
-    "summary": "Complete WHM/cPanel hosting automation and billing platform",
+    "summary": "Complete WHMCS alternative with WHM/cPanel hosting automation and billing",
     "description": (
         "Professional WHM/cPanel hosting management solution for Odoo 19. "
         "Automated account provisioning, domain management, billing integration, "
